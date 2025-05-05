@@ -7,7 +7,7 @@ on:
     branches: [ main, master ]
   # Permite execução manual
   workflow_dispatch:
-
+# inclusão de jobs
 jobs:
   validate:
     name: Validação de Código
