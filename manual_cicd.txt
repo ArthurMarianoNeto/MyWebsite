@@ -1,0 +1,204 @@
+# Tutorial: Implementando CI/CD para o Site de Catering Arthur Mariano
+
+Este tutorial guiará você passo a passo para implementar o fluxo de CI/CD no site de catering do Arthur Mariano. Seguindo estas instruções, você terá um pipeline completo que valida, otimiza e publica automaticamente seu site.
+
+## Pré-requisitos
+
+- Uma conta no GitHub
+- Git instalado em sua máquina
+- Node.js e npm instalados
+- Conhecimento básico de linha de comando
+
+## Passo 1: Preparando o Repositório
+
+1. **Crie um novo repositório no GitHub** ou use um existente.
+
+2. **Clone o repositório em sua máquina local**:
+   ```bash
+   git clone https://github.com/seu-usuario/arthur-mariano-catering.git
+   cd arthur-mariano-catering
+   ```
+
+3. **Adicione o código HTML do site**:
+   - Crie o arquivo `index.html` com o código do site de catering
+   - Adicione as imagens necessárias: `hamburger.jpg`, `tablesetting.jpg` e `tablesetting2.jpg`
+
+## Passo 2: Configurando o package.json
+
+1. **Inicialize o projeto npm**:
+   ```bash
+   npm init -y
+   ```
+
+2. **Instale as dependências de desenvolvimento**:
+   ```bash
+   npm install --save-dev html-validate pa11y-ci broken-link-checker imagemin-cli lighthouse lighthouse-ci html-minifier serve
+   ```
+
+3. **Substitua o conteúdo do package.json** pelo código fornecido no artefato `package.json`.
+
+## Passo 3: Configurando o GitHub Actions
+
+1. **Crie a estrutura de diretórios para o workflow**:
+   ```bash
+   mkdir -p .github/workflows
+   ```
+
+2. **Crie o arquivo de workflow**:
+   ```bash
+   touch .github/workflows/workflow-catering-site.yml
+   ```
+
+3. **Adicione o conteúdo do workflow** conforme fornecido no artefato `workflow-catering-site.yml`.
+
+## Passo 4: Configurando o GitHub Pages
+
+1. **Acesse as configurações do repositório** no GitHub.
+
+2. **Navegue até a seção "Pages"**.
+
+3. **Configure o source** para a branch `gh-pages` (será criada automaticamente pelo workflow).
+
+4. **Salve as configurações**.
+
+## Passo 5: (Opcional) Configurando o Netlify para Preview
+
+Se você deseja usar o Netlify para ambientes de preview:
+
+1. **Crie uma conta no Netlify** (se ainda não tiver uma).
+
+2. **Crie um novo site** vinculado ao seu repositório GitHub.
+
+3. **Obtenha o site ID** do Netlify nas configurações do site.
+
+4. **Crie um token de acesso pessoal** nas configurações da conta do Netlify.
+
+5. **Adicione os secrets no repositório GitHub**:
+   - Vá para "Settings" > "Secrets" > "Actions"
+   - Adicione os seguintes secrets:
+     - Nome: `NETLIFY_AUTH_TOKEN`, Valor: seu-token-de-acesso
+     - Nome: `NETLIFY_SITE_ID`, Valor: seu-site-id
+
+## Passo 6: Testando Localmente
+
+Antes de fazer commit, você pode testar as ferramentas de validação localmente:
+
+1. **Valide o HTML**:
+   ```bash
+   npx html-validate index.html
+   ```
+
+2. **Verifique a acessibilidade**:
+   ```bash
+   npx pa11y-ci index.html
+   ```
+
+3. **Verifique links quebrados**:
+   ```bash
+   npx broken-link-checker --recursive --ordered index.html
+   ```
+
+4. **Otimize as imagens**:
+   ```bash
+   npx imagemin-cli *.jpg --out-dir=./optimized
+   ```
+
+5. **Execute o servidor local**:
+   ```bash
+   npx serve
+   ```
+
+## Passo 7: Fazendo o Primeiro Commit
+
+1. **Adicione todos os arquivos ao Git**:
+   ```bash
+   git add .
+   ```
+
+2. **Faça o commit**:
+   ```bash
+   git commit -m "Implementação inicial do CI/CD para o site de catering"
+   ```
+
+3. **Envie para o GitHub**:
+   ```bash
+   git push origin main
+   ```
+
+## Passo 8: Acompanhando a Execução do Workflow
+
+1. **Acesse seu repositório no GitHub**.
+
+2. **Clique na aba "Actions"**.
+
+3. **Observe o workflow em execução**. Você verá todas as etapas sendo executadas conforme configurado.
+
+4. **Verifique os resultados** de cada job:
+   - Validação de código
+   - Deploy (se aplicável)
+   - Geração de relatórios
+
+## Passo 9: Acessando o Site Publicado
+
+1. **Após a conclusão bem-sucedida do workflow**, seu site estará disponível no GitHub Pages.
+
+2. **Acesse o site** através da URL:
+   ```
+   https://seu-usuario.github.io/arthur-mariano-catering/
+   ```
+
+## Passo 10: Implementando o Fluxo de Trabalho Contínuo
+
+Para trabalhar com este fluxo de CI/CD no dia a dia:
+
+1. **Crie branches para novas funcionalidades**:
+   ```bash
+   git checkout -b feature/nova-secao
+   ```
+
+2. **Faça suas alterações** no código.
+
+3. **Teste localmente** antes de enviar.
+
+4. **Envie a branch** para o GitHub:
+   ```bash
+   git push origin feature/nova-secao
+   ```
+
+5. **Crie um Pull Request** no GitHub.
+
+6. **Verifique o ambiente de preview** gerado automaticamente (se configurado com Netlify).
+
+7. **Após aprovação e merge**, o site será atualizado automaticamente em produção.
+
+## Solução de Problemas Comuns
+
+### O workflow falhou na validação HTML
+
+1. **Verifique os logs** na aba Actions para identificar os erros específicos.
+2. **Corrija os problemas** no código HTML.
+3. **Teste localmente** com `npx html-validate index.html`.
+4. **Faça um novo commit** com as correções.
+
+### As imagens não estão sendo carregadas no site publicado
+
+1. **Verifique os caminhos das imagens** no código HTML.
+2. **Certifique-se de que os arquivos estão presentes** no repositório.
+3. **Ajuste o workflow** se necessário para incluir as imagens no processo de build.
+
+### O deploy falha com erro de permissão
+
+1. **Verifique se as Actions têm permissão** para escrever no repositório.
+2. **Vá para Settings > Actions > General > Workflow permissions**.
+3. **Selecione "Read and write permissions"**.
+4. **Salve as configurações** e execute o workflow novamente.
+
+## Conclusão
+
+Parabéns! Você implementou com sucesso um fluxo de CI/CD completo para o site de catering Arthur Mariano. Este fluxo ajudará a manter a qualidade do código, garantir a acessibilidade e facilitar o processo de publicação de atualizações.
+
+Com este pipeline automatizado, você pode se concentrar no desenvolvimento e melhoria do site, enquanto as tarefas repetitivas de validação, otimização e deploy são tratadas automaticamente.
+
+---
+
+*Para mais informações ou suporte, consulte a documentação do GitHub Actions ou entre em contato com o mantenedor do repositório.*
