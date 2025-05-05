@@ -1,84 +1,31 @@
-=Gourmet au Catering por Arthur Mariano=
+# Gourmet au Catering by ARTHUR MARIANO
 
-==Descrição==
-Este repositório contém o site da empresa "Gourmet au Catering", um serviço de catering de alta qualidade dirigido por Arthur Mariano. O site foi desenvolvido utilizando HTML, CSS e o framework W3.CSS para criar uma experiência elegante e responsiva para os usuários.
+## Sobre Nós
 
-==Estrutura do Site==
-O site é composto por uma única página HTML com várias seções organizadas da seguinte forma:
+Desde 1891, o Gourmet au Catering oferece tradição e sabor incomparáveis. Fundado por Mr. Smith, nosso compromisso é utilizar ingredientes frescos e da estação para criar experiências gastronômicas memoráveis.
 
-===Navbar (Barra de Navegação)===
-* Logo/Nome da empresa com link para o topo da página
-* Links de navegação para as seções: About, Sales, Menu e Contact
+## Nossas Delícias
 
-===Header (Cabeçalho)===
-* Imagem principal de um hambúrguer com o texto "Le Catering"
+Confira nosso menu especial:
 
-===About Section (Sobre)===
-* Breve história da empresa, que existe desde 1891
-* Imagem de uma mesa posta ilustrando o serviço de catering
-* Descrição da filosofia da empresa, enfatizando o uso de ingredientes sazonais
+* **Cesta de Pães:** Variedade de pães de frutas frescos e muffins - R$ 5.50
+* **Granola de Mel e Amêndoa com Frutas:** Cereal natural com aveia tostada com mel, passas, amêndoas e tâmaras - R$ 7.00
+* **Waffle Belga:** Massa com sabor de baunilha e farinha maltada - R$ 7.50
+* **Ovos Mexidos:** Ovos mexidos com pimentão vermelho assado e alho, com cebolinha - R$ 7.50
+* **Panquecas de Mirtilo:** Com calda, manteiga e muitos mirtilos - R$ 8.90
+* **Frittata:** Ovos, bacon, queijo e vegetais - R$ 11.50
+* **Sandubão do bom:** Ovos, bacon, pão e vegetais - R$ 15.50
 
-===Menu Section (Cardápio)===
-* Lista de pratos disponíveis com preços
-* Itens incluem café da manhã e brunch como:
-** Bread Basket - 5.50
-** Honey Almond Granola with Fruits - 7.00
-** Belgian Waffle - 7.50
-** Scrambled eggs - 7.50
-** Blueberry Pancakes - 8.90
-** Frittata - 11.50
-** Sandubão do bom - 15.50
-* Imagem ilustrativa de uma mesa posta
+## Catering para Seu Evento
 
-===Contact Section (Contato)===
-* Informações de contato (endereço, telefone, e-mail)
-* Formulário para solicitação de serviços, incluindo:
-** Nome
-** Número de pessoas
-** Data e hora do evento
-** Mensagem/Requisitos especiais
-** Botão para envio do formulário
+Oferecemos serviço completo de catering para eventos de todos os tamanhos. Entendemos suas necessidades e preparamos a comida para satisfazer os mais altos critérios de apresentação e sabor. Não hesite em nos contatar!
 
-===Footer (Rodapé)===
-* Crédito ao W3.CSS com link para o site oficial
+**Informações de Contato:**
 
-==Tecnologias Utilizadas==
-* HTML5
-* CSS3
-* W3.CSS Framework
-* Fontes: "Times New Roman", "Playfair Display"
+* **Endereço:** Catering Service, 42nd Living St, 43043 New York, NY
+* **Telefone:** 00553123-2323
+* **Email:** catering@catering.com
 
-==Como Usar==
+Ou envie-nos uma mensagem através do nosso formulário de contato em nosso site.
 
-===Visualização Local===
-# Clone este repositório para sua máquina local
-# Abra o arquivo '''index.html''' em qualquer navegador moderno
-
-===Hospedagem===
-Para hospedar este site:
-# Faça upload de todos os arquivos para seu servidor web
-# Certifique-se de incluir as imagens referenciadas:
-## hamburger.jpg
-## tablesetting.jpg
-## tablesetting2.jpg
-
-==Personalização==
-Para personalizar este site:
-# Edite o arquivo HTML para alterar o conteúdo textual
-# Substitua as imagens por suas próprias imagens de alta qualidade
-# Modifique os estilos CSS conforme necessário
-# Atualize o formulário de contato para apontar para seu próprio script de processamento (atualmente configurado para '''/action_page.php''')
-
-==Funcionalidades a Implementar==
-Algumas sugestões para melhorar o site no futuro:
-* Adicionar a seção de "Sales" que está na navegação mas não implementada no conteúdo
-* Implementar galeria de fotos dos eventos anteriores
-* Adicionar depoimentos de clientes
-* Integrar sistema de reservas online
-* Criar páginas individuais para cada seção para mais detalhes
-
-==Contato==
-Para mais informações sobre este site, entre em contato:
-* '''Telefone:''' 00553123-2323
-* '''Email:''' catering@catering.com
-* '''Endereço:''' Catering Service, 42nd Living St, 43043 New York, NY
+## Créditos para W3.CSS
