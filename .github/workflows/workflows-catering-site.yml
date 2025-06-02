@@ -1,0 +1,155 @@
+name: CI/CD para Site de Catering Arthur Mariano
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master ]
+  # Permite execução manual
+  workflow_dispatch:
+# inclusão de jobs
+jobs:
+  validate:
+    name: Validação de Código
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v3
+      
+    - name: Configurar Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Instalar dependências
+      run: npm ci
+      
+    - name: Validar HTML
+      run: npx html-validate "*.html"
+      
+    - name: Verificar acessibilidade
+      run: npx pa11y-ci "*.html"
+      
+    - name: Verificar links quebrados
+      run: npx broken-link-checker --recursive --ordered "*.html"
+      
+    - name: Verificar otimização de imagens
+      run: |
+        npm install -g imagemin-cli
+        mkdir -p temp
+        cp -r *.jpg *.png *.jpeg *.gif temp/ 2>/dev/null || :
+        imagemin temp/* --out-dir=temp-optimized
+        
+    - name: Verificar performance
+      run: npx lighthouse-ci "*.html" --performance=70 --accessibility=70 --best-practices=70 --seo=70
+  
+  deploy-preview:
+    name: Deploy para Ambiente de Preview
+    needs: validate
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v3
+      
+    - name: Instalar dependências
+      run: npm ci
+      
+    - name: Build do site
+      run: |
+        mkdir -p dist
+        cp -r *.html *.css *.js *.jpg *.png fonts/ dist/
+        
+    - name: Deploy para Netlify (Preview)
+      uses: nwtgck/actions-netlify@v1.2
+      with:
+        publish-dir: './dist'
+        production-branch: main
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        deploy-message: "Deploy Preview from ${{ github.event.pull_request.title }}"
+        enable-pull-request-comment: true
+        enable-commit-comment: true
+        overwrites-pull-request-comment: true
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      timeout-minutes: 1
+  
+  deploy-production:
+    name: Deploy para Produção
+    needs: validate
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v3
+      
+    - name: Instalar dependências
+      run: npm ci
+      
+    - name: Otimizar imagens
+      run: |
+        npm install -g imagemin-cli
+        mkdir -p optimized-images
+        cp -r *.jpg *.png *.jpeg *.gif optimized-images/ 2>/dev/null || :
+        imagemin optimized-images/* --out-dir=./optimized
+        
+    - name: Minificar HTML
+      run: |
+        npx html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype --minify-css true --minify-js true --input-dir ./ --output-dir ./dist --file-ext html
+        
+    - name: Finalizar build do site
+      run: |
+        mkdir -p dist
+        [ -d "./optimized" ] && cp -r ./optimized/* ./dist/ || :
+        cp -r *.css *.js fonts/ ./dist/ 2>/dev/null || :
+        
+    - name: Deploy para GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: dist
+        branch: gh-pages
+
+  audit:
+    name: Geração de Relatório de Auditoria
+    needs: validate
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v3
+      
+    - name: Configurar Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Instalar dependências
+      run: npm ci
+      
+    - name: Gerar relatório de SEO
+      run: |
+        npx lighthouse --output json --output-path ./lighthouse-report.json --chrome-flags="--headless" ./*.html
+        
+    - name: Análise de performance
+      run: |
+        echo "# Relatório de Performance - $(date)" > performance-report.md
+        echo "## Tamanho dos arquivos" >> performance-report.md
+        echo "- HTML: $(du -h *.html | awk '{print $1}')" >> performance-report.md
+        echo "- Imagens: $(du -ch *.jpg *.png *.jpeg *.gif 2>/dev/null | grep total || echo '0')" >> performance-report.md
+        echo "## Verificação de recursos externos" >> performance-report.md
+        grep -o 'src="https://[^"]*"' *.html | sort | uniq >> performance-report.md
+        grep -o 'href="https://[^"]*"' *.html | sort | uniq >> performance-report.md
+        
+    - name: Publicar relatórios
+      uses: actions/upload-artifact@v3
+      with:
+        name: audit-reports
+        path: |
+          lighthouse-report.json
+          performance-report.md

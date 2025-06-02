@@ -1,0 +1,39 @@
+{
+    "name": "arthur-mariano-catering",
+    "version": "1.0.0",
+    "description": "Site de catering Gourmet au Catering by Arthur Mariano",
+    "main": "index.html",
+    "scripts": {
+      "start": "serve .",
+      "lint:html": "html-validate *.html",
+      "test:a11y": "pa11y-ci *.html",
+      "test:links": "broken-link-checker --recursive --ordered *.html",
+      "optimize:images": "imagemin *.{jpg,png,jpeg,gif} --out-dir=./optimized",
+      "build": "mkdir -p dist && cp -r *.html *.css *.js *.jpg *.png fonts/ dist/ || true",
+      "minify:html": "html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype --minify-css true --minify-js true --input-dir ./ --output-dir ./dist --file-ext html",
+      "lighthouse": "lighthouse --output json --output-path ./lighthouse-report.json --chrome-flags=\"--headless\" ./index.html"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/usuario/arthur-mariano-catering.git"
+    },
+    "keywords": [
+      "catering",
+      "restaurant",
+      "food",
+      "html",
+      "css"
+    ],
+    "author": "Arthur Mariano",
+    "license": "MIT",
+    "devDependencies": {
+      "broken-link-checker": "^0.7.8",
+      "html-minifier": "^4.0.0",
+      "html-validate": "^7.18.0",
+      "imagemin-cli": "^7.0.0",
+      "lighthouse": "^10.2.0",
+      "lighthouse-ci": "^1.14.0",
+      "pa11y-ci": "^3.0.1",
+      "serve": "^14.2.0"
+    }
+  }
